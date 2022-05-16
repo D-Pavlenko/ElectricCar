@@ -233,7 +233,7 @@ function imageMin() {
  * Webp
  */
 function webConverter() {
-    return gulp.src(path.dist.image + '**/*.{gif,png,jpg,jpeg}')
+    return gulp.src(path.dist.image + '**/*.{gif,png,jpg,jpeg,svg}')
         .pipe(webp())
         .pipe(gulp.dest(path.dist.image))
 }
