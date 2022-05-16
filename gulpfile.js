@@ -5,7 +5,7 @@ const gulp = require('gulp');
 const argv = require('yargs').argv;
 const browserSync = require('browser-sync').create();
 const nunjucks = require('gulp-nunjucks');
-const sass = require('gulp-sass')(require('sass')); 
+const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
 const autoprefixer = require('gulp-autoprefixer');
@@ -39,10 +39,10 @@ path.watch = {};
 /**
  * Html path
  */
-path.src.html[0] =  path.src.srcPath + path.src.html[0];
-path.src.html[1] =  "!" + path.src.html[0].slice(0, -6) + "_*.html";
-path.src.html[2] =  "!" + path.src.srcPath + "/";
-path.src.html[3] =  "!" + path.src.srcPath + "/templates";
+path.src.html[0] = path.src.srcPath + path.src.html[0];
+path.src.html[1] = "!" + path.src.html[0].slice(0, -6) + "_*.html";
+path.src.html[2] = "!" + path.src.srcPath + "/";
+path.src.html[3] = "!" + path.src.srcPath + "/templates";
 
 path.dist.html = path.dist.distPath + path.dist.html;
 
@@ -57,7 +57,7 @@ path.src.style[0] = path.src.srcPath + path.src.style[0];
 path.dist.style = path.dist.distPath + path.dist.style;
 
 path.watch.style = [];
-path.watch.style[0]  = path.src.style[0].replace( path.src.style[0].split('/').pop(), '**/*.scss' );
+path.watch.style[0] = path.src.style[0].replace(path.src.style[0].split('/').pop(), '**/*.scss');
 
 /**
  * Js path
@@ -65,9 +65,9 @@ path.watch.style[0]  = path.src.style[0].replace( path.src.style[0].split('/').p
 path.src.script[0] = path.src.srcPath + path.src.script[0];
 
 path.dist.script = path.dist.distPath + path.dist.script;
- 
+
 path.watch.script = [];
-path.watch.script[0] = path.src.script[0].replace( path.src.script[0].split('/').pop(), '**/*.js' );
+path.watch.script[0] = path.src.script[0].replace(path.src.script[0].split('/').pop(), '**/*.js');
 
 /**
  * Images path
@@ -107,30 +107,30 @@ path.watch.assets[0] = path.src.assets[0];
 /**
  * Dev check
  */
-const isDev = function(){
+const isDev = function () {
     return !argv.prod;
 }
 
 /**
  * Prod check
  */
-const isProd = function(){
+const isProd = function () {
     return !!argv.prod;
 }
 
 /**
  * Serve
- */ 
+ */
 function browsersync() {
     browserSync.init({
-            open: true,
-            server: path.dist.distPath
+        open: true,
+        server: path.dist.distPath
     });
 }
 
 /**
  * Html
- */ 
+ */
 function njk() {
     return gulp.src(path.src.html)
         .pipe(nunjucks.compile())
@@ -141,8 +141,8 @@ exports.njk = njk;
 
 /**
  * Style
- */ 
-function scss(){
+ */
+function scss() {
     return gulp.src(path.src.style)
         .pipe(gulpif(isDev(), sourcemaps.init()))
         .pipe(sass())
@@ -155,12 +155,12 @@ function scss(){
         .pipe(gulpif(isProd(), csso()))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(path.dist.style))
-		.pipe(browserSync.reload({stream: true}))
+        .pipe(browserSync.reload({ stream: true }))
 }
 
 /**
  * Script
- */ 
+ */
 const webpackConf = {
     mode: isDev() ? 'development' : 'production',
     devtool: isDev() ? 'eval-source-map' : false,
@@ -175,15 +175,15 @@ const webpackConf = {
     }
 }
 
-if(isProd()){
-	webpackConf.module.rules.push({
-		test: /\.(js)$/,
-		exclude: /(node_modules)/,
-		loader: 'babel-loader'
-	});
+if (isProd()) {
+    webpackConf.module.rules.push({
+        test: /\.(js)$/,
+        exclude: /(node_modules)/,
+        loader: 'babel-loader'
+    });
 }
 
-function script(){
+function script() {
     return gulp.src(path.src.script)
         .pipe(plumber())
         .pipe(webpackStream(webpackConf, webpack))
@@ -191,13 +191,13 @@ function script(){
         .pipe(gulpif(isProd(), uglify()))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(path.dist.script))
-        .pipe(browserSync.reload({stream: true}))
+        .pipe(browserSync.reload({ stream: true }))
 }
 
 /**
  * Image min
  */
-function imageMin(){
+function imageMin() {
     return gulp.src(path.src.image)
         .pipe(newer(path.dist.image))
         .pipe(imagemin([
@@ -214,14 +214,14 @@ function imageMin(){
 
             imagemin.svgo({
                 plugins: [
-                        { removeViewBox: false },
-                        { removeUnusedNS: false },
-                        { removeUselessStrokeAndFill: false },
-                        { cleanupIDs: false },
-                        { removeComments: true },
-                        { removeEmptyAttrs: true },
-                        { removeEmptyText: true },
-                        { collapseGroups: true }
+                    { removeViewBox: false },
+                    { removeUnusedNS: false },
+                    { removeUselessStrokeAndFill: false },
+                    { cleanupIDs: false },
+                    { removeComments: true },
+                    { removeEmptyAttrs: true },
+                    { removeEmptyText: true },
+                    { collapseGroups: true }
                 ]
             })
 
@@ -232,19 +232,19 @@ function imageMin(){
 /**
  * Webp
  */
-function webConverter(){
+function webConverter() {
     return gulp.src(path.dist.image + '**/*.{gif,png,jpg,jpeg}')
-		.pipe(webp())
-		.pipe(gulp.dest(path.dist.image))
+        .pipe(webp())
+        .pipe(gulp.dest(path.dist.image))
 }
 
-const image = gulp.series(imageMin, webConverter, (done) => {browserSync.reload(); done();});
+const image = gulp.series(imageMin, webConverter, (done) => { browserSync.reload(); done(); });
 
 /**
  * Fonts
  */
 function font() {
-    return gulp.src(path.src.font)		
+    return gulp.src(path.src.font)
         .pipe(gulp.dest(path.dist.font))
         .on('end', browserSync.reload);
 }
@@ -255,20 +255,20 @@ function font() {
 function assets() {
     return gulp.src(path.src.assets)
         .pipe(gulp.dest(path.dist.assets))
-        .pipe(browserSync.reload({stream: true}))
+        .pipe(browserSync.reload({ stream: true }))
 }
 
 /**
  * Clean
  */
- function clean(){
-	return del([path.dist.distPath]);
+function clean() {
+    return del([path.dist.distPath]);
 }
 
 /**
  * Watch
  */
-function watch(){
+function watch() {
     gulp.watch(path.watch.html, njk);
     gulp.watch(path.watch.style, scss);
     gulp.watch(path.watch.script, script);
@@ -286,7 +286,7 @@ exports.default = gulp.series(
     gulp.parallel(browsersync, watch)
 );
 
-gulp.task('deploy', function() {
+gulp.task('deploy', function () {
     return gulp.src('./dist/**/*')
         .pipe(ghPages());
 });

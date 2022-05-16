@@ -1,9 +1,11 @@
 {
+  "homepage": "http://D-Pavlenko.github.io/ElectricCar",
   "name": "gulp",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deploy": "gulp dist && gh-pages -d build",
     "dev": "gulp",
     "prod": "gulp --prod"
   },
