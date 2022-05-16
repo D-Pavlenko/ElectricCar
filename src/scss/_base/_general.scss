@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+$accent: #DAA520; // Accent Color
+$textcolor: #FFFFFF; // Text Color
+$dark: #303030;
+$deep: #252525;
+$font-size: 16px; // Body Font Size
+$lineheight: 1.7; // Document Line Height
+$systemfont: -apple-system,
+BlinkMacSystemFont,
+Arial,
+sans-serif; // System Font Family
+$size: 75px;
+$size-sm: 58px;
+$border-opacity: .1;
+
+$breakepoint_xxl: 1400px;
+$breakepoint_xl: 1200px;
+$breakepoint_lg: 992px;
+$breakepoint_md: 768px;
+$breakepoint_sm: 576px;
+$breakepoint_xsm: 400px;
+
+// FONTS LOAD SECTION
+@mixin font($fname, $fstyle, $fweight, $furl) {
+  @font-face {
+    font-family: $fname;
+    font-style: $fstyle;
+    font-weight: $fweight;
+    src: url($furl) format('woff2');
+  }
+}
+
+::selection {
+  background-color: $accent;
+  color: $textcolor;
+}
