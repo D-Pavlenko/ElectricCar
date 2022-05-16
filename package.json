@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "gulp dist && gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "dev": "gulp",
     "prod": "gulp --prod"
   },
